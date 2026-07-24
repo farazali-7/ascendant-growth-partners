@@ -7,7 +7,6 @@ import { ChevronDown } from "lucide-react";
 
 import { Container } from "@/components/shared";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 import { Logo } from "./logo";
 import { MegaMenu } from "./mega-menu";
@@ -64,10 +63,14 @@ export function SiteHeader() {
     setOpenMenu(null);
   }, []);
 
-  // Any navigation dismisses whatever is open.
+  // Dismiss any open surface when the URL changes. This synchronises the
+  // header with an external system (the router), so it covers back/forward and
+  // programmatic navigation that in-component click handlers cannot see.
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect */
     setOpenMenu(null);
     setMobileOpen(false);
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [pathname]);
 
   useEffect(() => clearTimers, []);
