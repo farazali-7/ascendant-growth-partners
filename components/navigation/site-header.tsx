@@ -80,15 +80,19 @@ export function SiteHeader() {
 
   return (
     <header
-      data-scrolled={scrolled}
+      // Opening a mega menu at the very top frosts the bar too, so bar and
+      // panel read as a single surface rather than the panel floating alone.
+      data-scrolled={scrolled || openMenu !== null}
       data-hidden={retracted}
       className="group/hd sticky top-0 z-50 -mb-(--header-h) transition-transform duration-(--dur-navbar) ease-editorial data-[hidden=true]:-translate-y-full"
     >
-      <div className="nav-enter">
+      {/* Bar layer sits above the mobile drawer (a sibling below) so the logo
+          and close control stay visible and clickable while the drawer is open. */}
+      <div className="nav-enter relative z-50">
         {/* Frosted surface layer â€” invisible at rest, engaging on scroll. */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 -z-10 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-(--dur-navbar) ease-editorial group-data-[scrolled=true]/hd:border-border group-data-[scrolled=true]/hd:bg-[color-mix(in_oklab,var(--agp-canvas)_80%,transparent)] group-data-[scrolled=true]/hd:shadow-subtle group-data-[scrolled=true]/hd:backdrop-blur-xl"
+          className="absolute inset-0 -z-10 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-(--dur-navbar) ease-editorial group-data-[scrolled=true]/hd:border-border group-data-[scrolled=true]/hd:bg-[color-mix(in_oklab,var(--agp-canvas)_92%,transparent)] group-data-[scrolled=true]/hd:shadow-subtle group-data-[scrolled=true]/hd:backdrop-blur-xl"
         />
 
         <Container

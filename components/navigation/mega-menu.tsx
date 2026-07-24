@@ -57,7 +57,7 @@ export function MegaMenu({
       data-state={open ? "open" : "closed"}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
-      className="mega-panel absolute inset-x-0 top-full border-b border-border bg-[color-mix(in_oklab,var(--agp-canvas)_86%,transparent)] shadow-card backdrop-blur-xl"
+      className="mega-panel absolute inset-x-0 top-full border-b border-border bg-[color-mix(in_oklab,var(--agp-canvas)_97%,transparent)] shadow-card backdrop-blur-xl"
     >
       {/* Transparent bridge covering the gap between bar and panel content. */}
       <span aria-hidden="true" className="absolute inset-x-0 -top-4 h-4" />
