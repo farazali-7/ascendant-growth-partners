@@ -471,6 +471,41 @@
   .hero-visual-reveal {
     animation: visual-in 760ms var(--ease-editorial) 160ms both;
   }
+
+  /*
+   * --- Scroll reveal -----------------------------------------------------
+   * The site-wide section entrance: fade + 16px settle, triggered when the
+   * element enters the viewport (data-visible flipped by the Reveal
+   * observer). Transition-based so it never re-fires, with an optional
+   * per-element stagger.
+   */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 640ms var(--ease-editorial),
+      transform 640ms var(--ease-editorial);
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal[data-visible="true"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /*
+   * --- Methodology timeline ---------------------------------------------
+   * The connecting line draws downward once the timeline enters view. Nested
+   * inside a Reveal, it keys off the wrapper's data-visible so the line grows
+   * in concert with the stages fading in.
+   */
+  .timeline-line {
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 1200ms var(--ease-editorial);
+  }
+  .reveal[data-visible="true"] .timeline-line {
+    transform: scaleY(1);
+  }
 }
 
 /*
@@ -490,5 +525,11 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Reveal content immediately rather than leaving it stranded at opacity 0. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

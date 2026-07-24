@@ -4,6 +4,7 @@ import { Newsreader, Public_Sans } from "next/font/google";
 import { SkipLink } from "@/components/shared/skip-link";
 import { MAIN_CONTENT_ID } from "@/components/shared/landmarks";
 import { SiteHeader } from "@/components/navigation";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { siteConfig } from "@/lib/site-config";
 
 import "./globals.css";
@@ -106,6 +107,7 @@ export default function RootLayout({
         <main id={MAIN_CONTENT_ID} className="flex flex-1 flex-col">
           {children}
         </main>
+        <SiteFooter />
       </body>
     </html>
   );

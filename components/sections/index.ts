@@ -1,0 +1,9 @@
+export { Philosophy } from "./philosophy";
+export { BusinessReality } from "./business-reality";
+export { Capabilities } from "./capabilities";
+export { Methodology } from "./methodology";
+export { Comparison } from "./comparison";
+export { Insights } from "./insights";
+export { Principles } from "./principles";
+export { Faq } from "./faq";
+export { Cta } from "./cta";
