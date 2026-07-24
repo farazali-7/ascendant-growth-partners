@@ -19,7 +19,7 @@ export function CapabilityCard({
   return (
     <Link
       href={capability.href}
-      className="group/cap flex min-h-full flex-col gap-5 rounded-xl border border-border bg-card p-7 transition-[transform,border-color] duration-(--dur-cta) ease-editorial hover:-translate-y-0.5 hover:border-border-strong focus-visible:-translate-y-0.5 focus-visible:border-border-strong"
+      className="group/cap flex min-h-full flex-col gap-5 rounded-xl border border-border bg-card p-7 transition-[transform,border-color,box-shadow] duration-(--dur-cta) ease-editorial hover:-translate-y-0.5 hover:border-border-strong hover:shadow-card focus-visible:-translate-y-0.5 focus-visible:border-border-strong focus-visible:shadow-card"
     >
       <span
         aria-hidden="true"

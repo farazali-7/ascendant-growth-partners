@@ -15,7 +15,7 @@ export function InsightCard({ article }: { article: InsightArticle }) {
   return (
     <Link
       href={article.href}
-      className="group/insight flex min-h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-[transform,border-color] duration-(--dur-cta) ease-editorial hover:-translate-y-1 hover:border-border-strong focus-visible:-translate-y-1 focus-visible:border-border-strong"
+      className="group/insight flex min-h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-[transform,border-color,box-shadow] duration-(--dur-cta) ease-editorial hover:-translate-y-0.5 hover:border-border-strong hover:shadow-card focus-visible:-translate-y-0.5 focus-visible:border-border-strong focus-visible:shadow-card"
     >
       {/* Editorial image placeholder */}
       <div className="relative aspect-[4/3] overflow-hidden bg-primary">
