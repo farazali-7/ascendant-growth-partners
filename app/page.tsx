@@ -1,46 +1,37 @@
-import Link from "next/link";
-
+import { Hero } from "@/components/hero";
 import { Section } from "@/components/shared";
 import { Eyebrow, Heading, Text } from "@/components/typography";
-import { Button } from "@/components/ui/button";
-import { siteConfig } from "@/lib/site-config";
 
 /**
- * Holding page for the foundation stage.
- *
- * Deliberately minimal: the homepage composition belongs to a later stage, and
- * anything designed here would have to be undone. It exists to exercise the
- * token layer and to reach the style guide.
+ * Home. The hero is followed by a quiet transition — a hairline divider into a
+ * philosophy statement — so the page reads with a magazine's flow rather than
+ * stopping abruptly. Later stages continue from the `#approach` anchor.
  */
 export default function HomePage() {
   return (
-    <Section
-      tone="canvas"
-      width="editorial"
-      className="flex flex-1 items-center"
-      aria-labelledby="home-heading"
-    >
-      <div className="flex flex-col items-start gap-6">
-        <Eyebrow marker tone="accent">
-          {siteConfig.shortName}
-        </Eyebrow>
+    <>
+      <Hero />
 
-        <Heading as="h1" size="display" id="home-heading">
-          Clarity before motion
-        </Heading>
-
-        <Text size="lead">{siteConfig.description}</Text>
-
-        <Text size="sm" tone="muted">
-          The design foundation is in place. Page composition follows in the next
-          stage.
-        </Text>
-
-        {/* Base UI composes via `render` rather than `asChild`. */}
-        <Button render={<Link href="/style-guide" />} size="lg" className="mt-2">
-          View the design system
-        </Button>
-      </div>
-    </Section>
+      <Section
+        id="approach"
+        tone="canvas"
+        divider="top"
+        width="editorial"
+        aria-labelledby="philosophy-heading"
+      >
+        <div className="flex flex-col items-start gap-6">
+          <Eyebrow marker>Our philosophy</Eyebrow>
+          <Heading as="h2" size="h2" id="philosophy-heading">
+            We don&rsquo;t reinvent what works. We implement it.
+          </Heading>
+          <Text size="lead">
+            The difference between advice and outcome is discipline. We join a
+            small number of leadership teams each year and stay close to the
+            work — translating strategy into operating decisions, and operating
+            decisions into durable results.
+          </Text>
+        </div>
+      </Section>
+    </>
   );
 }

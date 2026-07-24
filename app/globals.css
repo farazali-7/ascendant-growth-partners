@@ -103,9 +103,29 @@
   --footer: var(--agp-inverted-surface);
   --footer-foreground: var(--agp-inverted-ink);
 
-  /* Offset for anchor scrolling beneath the sticky header (added in a later
-     stage). Declared now so in-page links never land under the masthead. */
+  /* Offset for anchor scrolling beneath the sticky header. Matches the
+     scrolled (compact) header height, since that is the state in-page links
+     resolve against. */
   --header-height: 4.5rem;
+  --header-h: 6rem; /* 96px — resting height, over the hero. */
+  --header-h-scrolled: 4.5rem; /* 72px — compact, after scroll. */
+
+  /*
+   * Motion timing system (Stage 2).
+   *
+   * The single source of animation duration, mirroring the colour and type
+   * scales: every interaction reads one of these rather than inventing a
+   * value. The spread is deliberately narrow (180–350ms) so the whole
+   * interface feels like one hand moved it.
+   */
+  --dur-color: 180ms; /* text colour shifts */
+  --dur-underline: 220ms; /* link underline growth */
+  --dur-icon: 180ms; /* icon fades */
+  --dur-dropdown: 280ms; /* item-level reveals */
+  --dur-mega: 350ms; /* mega-menu panel */
+  --dur-navbar: 300ms; /* header shrink / surface */
+  --dur-search: 250ms; /* inline search expand */
+  --dur-cta: 180ms; /* primary action hover */
 }
 
 /* ==========================================================================
@@ -306,6 +326,151 @@
 
   /* Hyphenation is left off deliberately — ragged edges read more editorial
      than hyphenated justification at these measures. */
+}
+
+/* ==========================================================================
+   Motion language (Stage 2)
+
+   Kept here rather than inline so component markup stays readable, and so the
+   whole motion vocabulary is auditable in one place. Everything is transform /
+   opacity only (compositor-friendly), and everything decelerates on
+   --ease-editorial — the "door closing", never "button popping", curve.
+   ========================================================================== */
+
+@keyframes nav-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@keyframes visual-in {
+  from {
+    opacity: 0;
+    transform: scale(1.03);
+  }
+}
+
+@layer components {
+  /* --- Header entrance: fade + 10px settle, 120ms after first paint ------ */
+  .nav-enter {
+    animation: nav-enter var(--dur-navbar) var(--ease-editorial) 120ms both;
+  }
+
+  /* --- Navigation link: underline grows from the centre outward ---------- */
+  .nav-underline {
+    position: relative;
+  }
+  .nav-underline::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -0.4rem;
+    height: 1px;
+    width: 0;
+    translate: -50% 0;
+    background-color: currentColor;
+    transition: width var(--dur-underline) var(--ease-editorial);
+  }
+  .nav-underline:hover::after,
+  .nav-underline:focus-visible::after,
+  .nav-underline[data-open="true"]::after {
+    width: 100%;
+  }
+  /* Active page: a resting, quieter underline — present, not asserting. */
+  .nav-underline[data-active="true"]::after {
+    width: 100%;
+    opacity: 0.45;
+  }
+
+  /*
+   * --- Mega menu ---------------------------------------------------------
+   * Driven by transitions (not keyframes) and kept mounted, so the exit is as
+   * graceful as the entrance with no unmount-timing gymnastics. `visibility`
+   * is delayed on close so the panel stays hit-testable through its fade, and
+   * flips instantly on open.
+   */
+  .mega-panel {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition:
+      opacity var(--dur-mega) var(--ease-editorial),
+      transform var(--dur-mega) var(--ease-editorial),
+      visibility 0s linear var(--dur-mega);
+  }
+  .mega-panel[data-state="open"] {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition:
+      opacity var(--dur-mega) var(--ease-editorial),
+      transform var(--dur-mega) var(--ease-editorial),
+      visibility 0s;
+  }
+
+  /* Columns and links reveal in a staggered rhythm on open only. */
+  .mega-item {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--dur-dropdown) var(--ease-editorial),
+      transform var(--dur-dropdown) var(--ease-editorial);
+  }
+  .mega-panel[data-state="open"] .mega-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  /* The editorial feature cell: a near-invisible scale settle. */
+  .mega-editorial {
+    opacity: 0;
+    transform: scale(1.02);
+    transition:
+      opacity 500ms var(--ease-editorial),
+      transform 500ms var(--ease-editorial);
+  }
+  .mega-panel[data-state="open"] .mega-editorial {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 120ms;
+  }
+
+  /* --- Mobile drawer: items settle upward in sequence -------------------- */
+  .drawer-item {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity var(--dur-dropdown) var(--ease-editorial),
+      transform var(--dur-dropdown) var(--ease-editorial);
+  }
+  [data-state="open"] > .drawer-item {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: var(--stagger, 0ms);
+  }
+
+  /*
+   * --- Hero entrance -----------------------------------------------------
+   * A single orchestrated load: each element rises and fades on a staggered
+   * delay (set inline via --reveal-delay). One well-timed sequence reads as
+   * more considered than scattered micro-interactions.
+   */
+  .hero-reveal {
+    animation: rise-in 640ms var(--ease-editorial) both;
+    animation-delay: var(--reveal-delay, 0ms);
+  }
+  .hero-visual-reveal {
+    animation: visual-in 760ms var(--ease-editorial) 160ms both;
+  }
 }
 
 /*

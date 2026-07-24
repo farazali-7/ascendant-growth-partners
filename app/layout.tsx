@@ -3,6 +3,7 @@ import { Newsreader, Public_Sans } from "next/font/google";
 
 import { SkipLink } from "@/components/shared/skip-link";
 import { MAIN_CONTENT_ID } from "@/components/shared/landmarks";
+import { SiteHeader } from "@/components/navigation";
 import { siteConfig } from "@/lib/site-config";
 
 import "./globals.css";
@@ -95,10 +96,12 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <SkipLink />
+        <SiteHeader />
         {/*
           The main landmark lives here rather than in each page so the skip
-          target can never go missing. Header and footer will bracket it in a
-          later stage without touching page files.
+          target can never go missing. The sticky header overlays the top of
+          main (via its negative margin) so a hero can sit beneath a
+          transparent bar without any layout shift.
         */}
         <main id={MAIN_CONTENT_ID} className="flex flex-1 flex-col">
           {children}
