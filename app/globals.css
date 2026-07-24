@@ -2,129 +2,328 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/*
+ * Dark mode is intentionally NOT implemented. Executive Slate is a light-only
+ * system by brand decision.
+ *
+ * This variant is retained rather than removed on purpose: shadcn/ui ships
+ * `dark:` utilities throughout its components. Without this declaration those
+ * utilities would fall back to Tailwind's default `prefers-color-scheme`
+ * behaviour and the site would half-flip for visitors whose OS is set to dark.
+ * Scoping the variant to a `.dark` class we never apply renders them inert.
+ */
 @custom-variant dark (&:is(.dark *));
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
+/* ==========================================================================
+   LAYER 1 — Palette primitives: "Executive Slate"
+   The single place raw colour values are permitted to appear.
+   ========================================================================== */
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Surfaces */
+  --agp-canvas: #fafaf9; /* Page background. Warm off-white, never pure. */
+  --agp-surface: #ffffff; /* Cards. Advances against the warm canvas. */
+  --agp-surface-sunken: #f5f5f4; /* Alternating section bands. */
+
+  /* Ink — three tiers of hierarchy */
+  --agp-ink: #0f172a; /* Primary. Softened near-black. */
+  --agp-ink-secondary: #475569; /* Secondary. Body copy at length. */
+  --agp-ink-muted: #64748b; /* Muted. Metadata, captions, labels. */
+
+  /* Structure */
+  --agp-line: #e5e7eb; /* Resting borders and dividers. */
+  --agp-line-strong: #cbd5e1; /* Hover / active borders. */
+
+  /* Brand */
+  --agp-navy: #16324f; /* Deep executive navy. Used sparingly. */
+  --agp-navy-hover: #10253b;
+
+  /* Status */
+  --agp-success: #2f6f4f; /* Deliberately desaturated. */
+  /*
+   * Not in the supplied spec, but structurally required: shadcn's component
+   * contract expects `--destructive`. Chosen to sit at the same restraint and
+   * value as --agp-success so status colours read as one family.
+   */
+  --agp-critical: #9b2c2c;
+
+  /* Inverted zone (footer) */
+  --agp-inverted-surface: #0f172a;
+  --agp-inverted-ink: #cbd5e1;
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+/* ==========================================================================
+   LAYER 2 — Semantic bridge
+   Maps primitives onto the shadcn/ui token contract. Editing a primitive above
+   re-themes every installed shadcn component with no component-level changes.
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  --background: var(--agp-canvas);
+  --foreground: var(--agp-ink);
+
+  --card: var(--agp-surface);
+  --card-foreground: var(--agp-ink);
+
+  --popover: var(--agp-surface);
+  --popover-foreground: var(--agp-ink);
+
+  --primary: var(--agp-navy);
+  --primary-foreground: var(--agp-surface);
+
+  --secondary: var(--agp-surface-sunken);
+  --secondary-foreground: var(--agp-ink);
+
+  --muted: var(--agp-surface-sunken);
+  --muted-foreground: var(--agp-ink-muted);
+
+  /* In shadcn's model `accent` is a hover surface, not the brand colour. */
+  --accent: var(--agp-surface-sunken);
+  --accent-foreground: var(--agp-navy);
+
+  --destructive: var(--agp-critical);
+
+  --border: var(--agp-line);
+  --input: var(--agp-line);
+  --ring: var(--agp-navy);
+
+  --radius: 0.25rem;
+
+  /*
+   * Extensions beyond the shadcn contract. The supplied palette specifies
+   * three text tiers, but shadcn models only two (`foreground`,
+   * `muted-foreground`). `--ink-secondary` restores the middle tier.
+   */
+  --ink-secondary: var(--agp-ink-secondary);
+  --border-strong: var(--agp-line-strong);
+  --success: var(--agp-success);
+  --success-foreground: var(--agp-surface);
+  --footer: var(--agp-inverted-surface);
+  --footer-foreground: var(--agp-inverted-ink);
+
+  /* Offset for anchor scrolling beneath the sticky header (added in a later
+     stage). Declared now so in-page links never land under the masthead. */
+  --header-height: 4.5rem;
 }
+
+/* ==========================================================================
+   LAYER 3 — Theme: exposes tokens to Tailwind as first-class utilities
+   ========================================================================== */
+
+@theme inline {
+  /* Colour ------------------------------------------------------------- */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Extensions: text-ink-secondary, border-border-strong, bg-success, bg-footer */
+  --color-ink-secondary: var(--ink-secondary);
+  --color-border-strong: var(--border-strong);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-footer: var(--footer);
+  --color-footer-foreground: var(--footer-foreground);
+
+  /* Type families ------------------------------------------------------ */
+  --font-sans: var(--font-public-sans);
+  --font-display: var(--font-newsreader);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  /*
+   * `font-heading` is consumed internally by shadcn (CardTitle and similar).
+   * It maps to the grotesque, not the display serif: those are UI-scale titles
+   * around 1rem, where the serif loses its authority and reads merely decorative.
+   * Editorial headlines go through <Heading>, which selects the family per size.
+   */
+  --font-heading: var(--font-public-sans);
+
+  /* Radius — 4px base. Crisp rather than soft; softness reads consumer. */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 3);
+  --radius-4xl: calc(var(--radius) * 4);
+}
+
+@theme {
+  /* Type scale ---------------------------------------------------------
+     Fluid via clamp() so sizing is continuous rather than snapping at
+     breakpoints. Weights stay low (400) at display sizes: heavy serif
+     headlines read promotional, not editorial. */
+
+  --text-display: clamp(2.75rem, 1.55rem + 4.4vw, 5.25rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.028em;
+  --text-display--font-weight: 400;
+
+  --text-h1: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.024em;
+  --text-h1--font-weight: 400;
+
+  --text-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.5rem);
+  --text-h2--line-height: 1.16;
+  --text-h2--letter-spacing: -0.018em;
+  --text-h2--font-weight: 400;
+
+  --text-h3: clamp(1.25rem, 1.12rem + 0.5vw, 1.5rem);
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.012em;
+  --text-h3--font-weight: 500;
+
+  --text-h4: 1.0625rem;
+  --text-h4--line-height: 1.45;
+  --text-h4--letter-spacing: -0.006em;
+  --text-h4--font-weight: 500;
+
+  /* Standfirst / deck. Sits between headline and body. */
+  --text-lead: clamp(1.125rem, 1.04rem + 0.38vw, 1.3125rem);
+  --text-lead--line-height: 1.6;
+  --text-lead--letter-spacing: -0.008em;
+  --text-lead--font-weight: 400;
+
+  /* Body at 1.7 leading — generous, tuned for sustained reading. */
+  --text-body: 1rem;
+  --text-body--line-height: 1.7;
+  --text-body--letter-spacing: 0;
+  --text-body--font-weight: 400;
+
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.6;
+  --text-body-sm--letter-spacing: 0;
+  --text-body-sm--font-weight: 400;
+
+  /* Eyebrow / kicker. Wide tracking is what carries the editorial signal. */
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.14em;
+  --text-eyebrow--font-weight: 500;
+
+  /* Spatial rhythm ------------------------------------------------------
+     Named so no component hard-codes a section padding or page gutter. */
+  --spacing-gutter: clamp(1.25rem, 0.7rem + 2.6vw, 2.5rem);
+  --spacing-section: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+  --spacing-section-sm: clamp(3rem, 2.1rem + 3.6vw, 5.5rem);
+
+  /* Measure ------------------------------------------------------------- */
+  --container-editorial: 44rem; /* ~68ch. Long-form prose. */
+  --container-content: 75rem; /* 1200px. Standard section width. */
+  --container-wide: 90rem; /* 1440px. Full-bleed compositions. */
+
+  /* Elevation -----------------------------------------------------------
+     Near-invisible by design. Structure is carried by borders and surface
+     value; shadow only separates genuinely floating layers. */
+  --shadow-subtle: 0 1px 2px 0 color-mix(in oklab, var(--agp-ink) 5%, transparent);
+  --shadow-card:
+    0 1px 2px 0 color-mix(in oklab, var(--agp-ink) 4%, transparent),
+    0 8px 24px -14px color-mix(in oklab, var(--agp-ink) 12%, transparent);
+  --shadow-lifted:
+    0 1px 2px 0 color-mix(in oklab, var(--agp-ink) 5%, transparent),
+    0 14px 34px -16px color-mix(in oklab, var(--agp-ink) 16%, transparent);
+  --shadow-overlay: 0 24px 60px -20px color-mix(in oklab, var(--agp-ink) 24%, transparent);
+
+  /* Motion --------------------------------------------------------------
+     Canonical durations: 150ms (micro) / 250ms (standard) / 400ms (entrance).
+     Paired with `ease-editorial` — a decelerating curve with no overshoot. */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+
   html {
     @apply font-sans;
+    scroll-behavior: smooth;
+    /* Keeps anchor targets clear of the sticky masthead. */
+    scroll-padding-top: calc(var(--header-height) + 1.5rem);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground text-body;
+    text-rendering: optimizeLegibility;
+    /* Serif display type at large sizes benefits from optical kerning. */
+    font-kerning: normal;
+    font-synthesis-weight: none;
+  }
+
+  /*
+   * Single global focus treatment. Navy on canvas measures 12.9:1, so the
+   * indicator is unambiguous without a second visual language. shadcn
+   * components override this with their own ring, which resolves to the same
+   * --ring token.
+   */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--agp-navy) 16%, transparent);
+    color: var(--agp-ink);
+  }
+
+  /* Headings default to the display serif; body copy inherits the grotesque. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Hyphenation is left off deliberately — ragged edges read more editorial
+     than hyphenated justification at these measures. */
+}
+
+/*
+ * Honour prefers-reduced-motion once, globally, rather than per-component.
+ * Values are near-zero rather than zero so transition/animation end events
+ * still fire and stateful components do not stall.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
