@@ -97,8 +97,8 @@ export function InsightsExplorer() {
         </>
       ) : (
         <EmptyState
-          title="New insights coming soon."
-          description="We publish deliberately rather than often. Nothing in this category yet — check back shortly."
+          title="New insights are being prepared."
+          description="We publish deliberately rather than often. Nothing in this category just yet — check back soon."
         />
       )}
     </div>

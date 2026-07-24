@@ -1,36 +1,125 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ascendant Growth Partners
 
-## Getting Started
+An editorial marketing site for an executive advisory firm, built as an
+implementation of a provided strategic brief — the goal was to *elevate the
+execution* of the client's vision, not to redesign it.
 
-First, run the development server:
+The experience aims to feel editorial, calm, and premium: serif display
+typography, a warm off‑white palette with a single deep navy accent, generous
+whitespace, border‑led structure, and motion you feel rather than notice.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Live demo:** _add your Vercel URL_
+
+---
+
+## Tech stack
+
+- **Next.js (App Router)** — Server Components by default, static rendering
+- **React + TypeScript** — strict, fully typed components
+- **Tailwind CSS v4** — CSS‑first theme; design tokens as the source of truth
+- **shadcn/ui** (Base UI) — Button, Card, Accordion, Separator, Navigation Menu
+- **Lucide React** — icons, one stroke width, one size scale
+- **next/font** — self‑hosted Newsreader (display) + Public Sans (body), zero CLS
+- **next/og** — generated Open Graph / social preview image
+
+No other runtime dependencies. Motion is CSS‑driven — Framer Motion was
+deliberately **not** added, since fades, glides and staggered reveals are
+achievable with transitions that also honour `prefers-reduced-motion` for free.
+
+---
+
+## Features
+
+- **Editorial homepage** — hero, philosophy strip, business reality, capabilities,
+  a Growth Architecture methodology timeline, comparison, insights, principles,
+  FAQ, and a closing CTA — sequenced to answer an executive's questions in order.
+- **Premium navigation** — sticky header that transitions transparent → frosted
+  and shrinks on scroll, retracts on scroll‑down, an intent‑delayed mega menu
+  with a graceful close, inline‑expanding search, and a full‑screen mobile drawer.
+- **Interior pages** — Contact (accessible form with inline validation, loading
+  and success states), Insights (working category filter, pagination placeholder,
+  editorial empty state), and About.
+- **Design system** — tokenised colour, type scale, spacing, radius, elevation and
+  motion, with an internal `/style-guide` that verifies colour contrast from the
+  live token values.
+- **Production touches** — reading‑progress bar, editorial 404, `robots.txt`,
+  `sitemap.xml`, Organization/WebSite JSON‑LD, per‑page metadata + canonicals,
+  and a generated social preview image.
+
+---
+
+## Folder structure
+
+```
+app/                     Routes, metadata, robots, sitemap, OG image, 404
+components/
+  navigation/            Header, mega menu, search, mobile drawer, nav config
+  hero/                  Hero and its parts
+  sections/              Homepage body sections + shared section data
+  contact/  insights/    Page‑specific components
+  layout/                Footer
+  typography/            Heading, Eyebrow, Text primitives
+  shared/                Container, Section, Reveal, PageHeader, EmptyState, …
+  ui/                    shadcn primitives (Button, Card, Accordion, …)
+lib/                     site-config, utils (cn)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Every section is self‑contained and composed from shared primitives, so the
+site scales from a handful of pages to dozens without new patterns.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Design philosophy
 
-## Learn More
+- **Tokens first.** Colour, type, spacing, radius, elevation and motion are
+  defined once in `app/globals.css` and consumed everywhere. Changing a token
+  re‑themes the whole site, shadcn components included.
+- **Semantics before size.** Headings choose their level from document
+  structure and their size from design, independently — a small heading never
+  costs a broken outline.
+- **Borders over shadows.** Structure is carried by hairlines and surface value;
+  shadow is reserved for elements that genuinely float.
+- **Invisible motion.** Three durations, one decelerating curve; everything
+  transform/opacity only, all suppressed under reduced motion.
 
-To learn more about Next.js, take a look at the following resources:
+See `IMPLEMENTATION_NOTES.md` for the reasoning behind the key decisions.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Performance & quality goals
 
-## Deploy on Vercel
+- Static rendering for every route; self‑hosted fonts (no CLS)
+- Transform/opacity‑only animation; minimal client components
+- Targets: LCP < 2.5s, CLS ≈ 0, Lighthouse Performance 95+, Accessibility 100,
+  SEO 100
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Getting started
+
+```bash
+npm install
+npm run dev      # http://localhost:3000
+```
+
+```bash
+npm run build    # production build
+npm run start    # serve the production build
+npm run lint     # eslint
+```
+
+Set `NEXT_PUBLIC_SITE_URL` in the deployment environment so canonical URLs,
+sitemap and OG tags resolve to the production origin.
+
+---
+
+## Deployment
+
+Optimised for Vercel. Push the repository, import it, set
+`NEXT_PUBLIC_SITE_URL`, and deploy.
+
+---
+
+## Screenshots
+
+_Add homepage, mega menu, and a mobile view here._

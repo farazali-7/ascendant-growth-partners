@@ -3,6 +3,8 @@ import { Newsreader, Public_Sans } from "next/font/google";
 
 import { SkipLink } from "@/components/shared/skip-link";
 import { MAIN_CONTENT_ID } from "@/components/shared/landmarks";
+import { ReadingProgress } from "@/components/shared/reading-progress";
+import { StructuredData } from "@/components/shared/structured-data";
 import { SiteHeader } from "@/components/navigation";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { siteConfig } from "@/lib/site-config";
@@ -103,6 +105,8 @@ export default function RootLayout({
         app are still reported.
       */}
       <body className="flex min-h-full flex-col" suppressHydrationWarning>
+        <StructuredData />
+        <ReadingProgress />
         <SkipLink />
         <SiteHeader />
         {/*
