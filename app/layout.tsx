@@ -95,7 +95,14 @@ export default function RootLayout({
       lang="en"
       className={`${publicSans.variable} ${newsreader.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
+      {/*
+        suppressHydrationWarning tolerates attributes injected onto <body> by
+        browser extensions (e.g. ColorZilla's `cz-shortcut-listen`, Grammarly,
+        Dark Reader) before React hydrates. It suppresses only this element's
+        own attribute diff — one level deep — so genuine mismatches inside the
+        app are still reported.
+      */}
+      <body className="flex min-h-full flex-col" suppressHydrationWarning>
         <SkipLink />
         <SiteHeader />
         {/*
